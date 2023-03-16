@@ -1,0 +1,174 @@
+--------------------------------------------------
+title: "LABS_52"
+author: "JESSICA PAOLA AGUILAR SERVIN"
+date: "2023-03-16"
+output: html_document
+----------------------------------------------------------------
+############################################
+ LABORATORIO DE EDICIÓN DE COLOR-PARTE 2  
+############################################
+
+LABORATORIO - Gráficos en R con ggplot2 para Ciencia de Datos
+Editando el color de los gráficos (PARTE 1)
+
+Instalando paquete con los datos
+install.packages("gapminder")
+install.packages("ggplot2")
+
+cargar libreria ggplot2 y gapminder
+```{r}
+library(ggplot2)
+library(gapminder)
+```
+
+cargando datos a entorno
+```{r}
+data("gapminder")
+```
+
+filtrando por año 2007
+```{r}
+gapminder2007 <- gapminder[gapminder$year == '2007', ]
+```
+
+De donde sacar colores?
+http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+Escala discreta
+haciendo grafica de puntos por continente
+```{r}
+g1 <- ggplot(data = gapminder2007,
+             mapping = aes(x = gdpPercap,
+                           y = lifeExp,
+                           color = continent)) +
+  geom_point()
+```
+
+ver g1
+```{r}
+g1
+```
+
+haciendo boxplot en continentes
+```{r}
+g2 <- ggplot(data = gapminder2007,
+             mapping = aes(x = continent, 
+                           y = lifeExp,
+                           fill = continent)) +
+  geom_boxplot()
+
+```
+
+#ver g2
+```{r}
+g2
+```
+
+cambiando el color de los continentes g1
+
+```{r}
+g1 + scale_color_manual (values = c('cadetblue',
+                                               'chartreuse',
+                                               'firebrick',
+                                               'gold',
+                                               'darkorchid'))
+```
+
+cambiando el color de los continentes g2
+                                               
+```{r}
+g2 + scale_fill_manual (values = c('cadetblue',
+                                              'chartreuse',
+                                              'firebrick',
+                                              'gold',
+                                              'darkorchid'))
+```
+
+                                              
+cambiando colores con paleta RColorBrewer
+instalar RColorBrewer
+install.packages('RColorBrewer')
+para ver las paletas
+```{r}
+library(RColorBrewer)
+display.brewer.all()
+```
+guardar como imagen width = 400, height = 800
+
+cambiando escala de color g1
+```{r}
+g1 + scale_color_brewer(palette="BrBG")
+```
+
+cambiando escala de color g2
+```{r}
+
+g2 + scale_fill_brewer(palette="Paired")
+```
+
+cambiando escala de grises g1
+
+```{r}
+g1 + scale_color_grey()
+```
+
+cambiando escala de grises g2
+
+```{r}
+g2 + scale_fill_grey()
+```
+
+########### PARTE 2  ###############
+
+Escala continua (variable continua)
+haciendo grafica de puntos por poblacion
+```{r}
+g3 <- ggplot(data = gapminder2007,
+             mapping = aes(x = gdpPercap, 
+                           y = lifeExp,
+                           color = log(pop))) +
+  geom_point()
+
+```
+
+# Ver g3
+```{r}
+g3
+```
+
+
+cambiando el color de los puntos según gradiente
+```{r}
+g3 + scale_color_gradient(low="blue", high = "red")
+```
+
+
+cambiando el color de los puntos según gradiente asignar punto medio
+```{r}
+g3 + scale_color_gradient2(midpoint = 16,
+                           low="blue",
+                           mid = "white", 
+                           high = "red", 
+                           space="Lab" )
+```
+
+
+haciendo histograma en poblacion
+```{r}
+g4 <- ggplot(data = gapminder2007,
+             mapping = aes(x = lifeExp,
+                           fill = ..count..)) +
+  geom_histogram()
+```
+
+
+Ver g4
+```{r}
+g4
+```
+
+cambiando color de barras histograma
+```{r}
+g4 + scale_fill_gradient(low="blue", high = "red")
+```
+
